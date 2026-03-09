@@ -1,43 +1,39 @@
-    <mat-card class="w-full max-w-4xl mx-auto !rounded-2xl !shadow-sm !border !border-slate-100">
-      <mat-card-content>
-        <div class="flex flex-col md:flex-row gap-8 w-full p-2">
-          <!-- Across Clues -->
-          <div class="flex-1">
-            <h3 class="text-lg font-sans font-bold text-slate-800 mb-2 border-b border-slate-200 pb-2 uppercase tracking-wider">Across</h3>
-            <mat-action-list class="!h-64 overflow-y-auto custom-scrollbar">
-              @for (clue of acrossClues(); track clue.id) {
-                <button 
-                  mat-list-item
-                  [ngClass]="{
-                    '!bg-blue-100 !text-blue-900': isActiveClue(clue.id)
-                  }"
-                  (click)="onClueClick(clue.row, clue.col, 'across')"
-                >
-                  <span class="font-bold mr-3 min-w-[1.5rem] inline-block text-right">{{ clue.number }}</span>
-                  <span class="font-sans">{{ clue.text }}</span>
-                </button>
-              }
-            </mat-action-list>
-          </div>
+<div class="clues-container">
+  <!-- Across Clues -->
+  <div class="clue-section">
+    <h3 class="clue-title">ACROSS</h3>
+    <div class="clue-list custom-scrollbar">
+      @for (clue of acrossClues(); track clue.id) {
+        <button 
+          class="clue-item"
+          [ngClass]="{
+            'is-active': isActiveClue(clue.id)
+          }"
+          (click)="onClueClick(clue.row, clue.col, 'across')"
+        >
+          <span class="clue-number">{{ clue.number }}</span>
+          <span class="clue-text">{{ clue.text }}</span>
+        </button>
+      }
+    </div>
+  </div>
 
-          <!-- Down Clues -->
-          <div class="flex-1">
-            <h3 class="text-lg font-sans font-bold text-slate-800 mb-2 border-b border-slate-200 pb-2 uppercase tracking-wider">Down</h3>
-            <mat-action-list class="!h-64 overflow-y-auto custom-scrollbar">
-              @for (clue of downClues(); track clue.id) {
-                <button 
-                  mat-list-item
-                  [ngClass]="{
-                    '!bg-blue-100 !text-blue-900': isActiveClue(clue.id)
-                  }"
-                  (click)="onClueClick(clue.row, clue.col, 'down')"
-                >
-                  <span class="font-bold mr-3 min-w-[1.5rem] inline-block text-right">{{ clue.number }}</span>
-                  <span class="font-sans">{{ clue.text }}</span>
-                </button>
-              }
-            </mat-action-list>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <!-- Down Clues -->
+  <div class="clue-section">
+    <h3 class="clue-title">DOWN</h3>
+    <div class="clue-list custom-scrollbar">
+      @for (clue of downClues(); track clue.id) {
+        <button 
+          class="clue-item"
+          [ngClass]="{
+            'is-active': isActiveClue(clue.id)
+          }"
+          (click)="onClueClick(clue.row, clue.col, 'down')"
+        >
+          <span class="clue-number">{{ clue.number }}</span>
+          <span class="clue-text">{{ clue.text }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</div>

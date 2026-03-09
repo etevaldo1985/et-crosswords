@@ -5,6 +5,7 @@ import { CrosswordBoardComponent } from '../crossword-board/crossword-board';
 import { ClueListComponent } from '../clue-list/clue-list';
 import { GameControlsComponent } from '../game-controls/game-controls';
 import { CrosswordService } from '../../services/crossword.service';
+import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -19,6 +20,9 @@ export class GameComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private crosswordService = inject(CrosswordService);
+  private authService = inject(AuthService);
+  
+  user = this.authService.user;
 
   ngOnInit() {
     const puzzleId = this.route.snapshot.paramMap.get('id');

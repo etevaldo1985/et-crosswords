@@ -1,1 +1,110 @@
-/* game-controls styles */
+:host {
+  display: block;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.arcade-btn {
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.arcade-btn:hover {
+  transform: translateY(-2px);
+}
+
+.verify-btn {
+  background: var(--easy);
+  color: var(--bg);
+  box-shadow: 0 0 15px var(--easy-dim);
+}
+
+.verify-btn:hover {
+  background: #00ffb3;
+  box-shadow: 0 0 25px rgba(0, 229, 160, 0.3);
+}
+
+.restart-btn {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.restart-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--text);
+}
+
+.btn-text {
+  margin-top: 2px;
+}
+
+.score-badge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.score-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+}
+
+.score-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.text-easy { color: var(--easy); text-shadow: 0 0 10px var(--easy-dim); }
+.text-medium { color: var(--medium); text-shadow: 0 0 10px var(--medium-dim); }
+.text-hard { color: var(--hard); text-shadow: 0 0 10px var(--hard-dim); }
+
+@media (max-width: 640px) {
+  .controls-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .arcade-btn {
+    width: 100%;
+  }
+  .score-badge {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+}
