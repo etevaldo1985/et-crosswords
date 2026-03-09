@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+    
+    function isValidPuzzle(data) {
+      return data.keys().hasAll(['id', 'title', 'language', 'difficulty', 'size', 'gridStr', 'acrossClues', 'downClues']) &&
+             data.gridStr is list &&
+             data.acrossClues is map &&
+             data.downClues is map;
+    }
+
+    // A5. Puzzles Rules
+    match /puzzles/{id} {
+      // Leitura pública (ou só logados, conforme preferência)
+      allow read: if true; 
+      
+      // Criação somente por admin + validação mínima
+      allow create: if isAdmin() && isValidPuzzle(request.resource.data);
+      
+      // Bloquear updates/deletes em puzzles gerados
+      allow update, delete: if false;
+    }
+    
+    // A5. Rate Limits Rules
+    match /rate_limits/{uid} {
+      // Apenas o próprio UID autenticado pode ler/escrever
+      allow read, write: if isAuthenticated() && request.auth.uid == uid;
+    }
+
+    // User progress (Opcional B6)
+    match /user_progress/{uid}/puzzles/{puzzleId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == uid;
+    }
+  }
+}

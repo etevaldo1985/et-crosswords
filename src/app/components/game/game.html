@@ -1,0 +1,18 @@
+    <div class="min-h-screen bg-slate-100 text-slate-900 font-sans p-4 md:p-8 flex flex-col items-center">
+      <header class="w-full max-w-4xl mx-auto mb-8 flex justify-between items-center">
+        <button mat-icon-button (click)="goBack()" class="!text-slate-500 hover:!text-slate-900" aria-label="Back to Home">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="text-center flex-1">
+          <h1 class="text-4xl md:text-5xl font-sans font-bold tracking-tight text-slate-900 mb-2">ET's Crossword</h1>
+          <p class="text-slate-500 font-medium">A modern puzzle experience</p>
+        </div>
+        <div class="w-10"></div> <!-- Spacer for centering -->
+      </header>
+
+      <main class="w-full max-w-4xl mx-auto flex flex-col items-center">
+        <app-crossword-board class="w-full mb-8"></app-crossword-board>
+        <app-game-controls class="w-full"></app-game-controls>
+        <app-clue-list class="w-full mt-4"></app-clue-list>
+      </main>
+    </div>

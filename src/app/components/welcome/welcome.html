@@ -1,0 +1,32 @@
+    <div class="min-h-[80vh] flex flex-col items-center justify-center p-4 text-center">
+      <div class="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-12 flex flex-col items-center">
+        <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
+          <mat-icon class="!text-5xl !w-12 !h-12 text-emerald-600">grid_on</mat-icon>
+        </div>
+        
+        <h1 class="text-4xl font-sans font-bold tracking-tight text-slate-900 mb-4">ET's Crossword</h1>
+        <p class="text-slate-500 font-medium mb-10 text-lg">Challenge your mind with our daily puzzles. Easy, medium, and hard levels available.</p>
+        
+        <button 
+          mat-flat-button 
+          class="!bg-slate-900 !text-white !rounded-xl !px-8 !py-6 !w-full !text-lg flex items-center justify-center gap-3 hover:!bg-slate-800 transition-colors disabled:!opacity-70"
+          (click)="login()"
+          [disabled]="isLoggingIn()"
+        >
+          @if (isLoggingIn()) {
+            <mat-icon class="animate-spin">refresh</mat-icon>
+            Signing in...
+          } @else {
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-6 h-6 mr-2" />
+            Continue with Google
+          }
+        </button>
+
+        @if (loginError()) {
+          <div class="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+            <mat-icon class="!text-lg !w-5 !h-5">error_outline</mat-icon>
+            {{ loginError() }}
+          </div>
+        }
+      </div>
+    </div>

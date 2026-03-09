@@ -1,0 +1,141 @@
+    <div class="min-h-screen bg-slate-100 p-4 md:p-8">
+      <header class="max-w-6xl mx-auto flex justify-between items-center mb-12">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+            <mat-icon class="text-emerald-600">grid_on</mat-icon>
+          </div>
+          <h1 class="text-2xl font-sans font-bold tracking-tight text-slate-900">ET's Crossword</h1>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="hidden sm:flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
+            <img [src]="user()?.picture" alt="Profile" class="w-8 h-8 rounded-full" />
+            <span class="font-medium text-slate-700">{{ user()?.name }}</span>
+          </div>
+          <button mat-icon-button (click)="logout()" class="!text-slate-500 hover:!text-slate-900" aria-label="Logout">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      </header>
+
+      <main class="max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+
+          <!-- Language Selector -->
+          <div class="flex items-center bg-white rounded-full border border-slate-200 p-1 shadow-sm">
+            <button 
+              class="px-4 py-2 rounded-full text-sm font-bold transition-colors"
+              [ngClass]="selectedLanguage() === 'en' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:text-slate-900'"
+              (click)="selectLanguage('en')"
+            >
+              English
+            </button>
+            <button 
+              class="px-4 py-2 rounded-full text-sm font-bold transition-colors"
+              [ngClass]="selectedLanguage() === 'pt' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:text-slate-900'"
+              (click)="selectLanguage('pt')"
+            >
+              Português
+            </button>
+          </div>
+        </div>
+
+        <!-- Difficulty Menu -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <button 
+            mat-flat-button 
+            [ngClass]="selectedDifficulty() === 'easy' ? '!bg-emerald-600 !text-white' : '!bg-white !text-slate-700'"
+            class="!rounded-xl !px-8 !py-6 !text-lg !shadow-sm border border-slate-200 transition-all"
+            (click)="selectDifficulty('easy')"
+          >
+            <mat-icon class="mr-2" [ngClass]="selectedDifficulty() === 'easy' ? 'text-white' : 'text-emerald-500'">sentiment_satisfied</mat-icon>
+            Easy (7x7)
+          </button>
+          
+          <button 
+            mat-flat-button 
+            [ngClass]="selectedDifficulty() === 'medium' ? '!bg-amber-600 !text-white' : '!bg-white !text-slate-700'"
+            class="!rounded-xl !px-8 !py-6 !text-lg !shadow-sm border border-slate-200 transition-all"
+            (click)="selectDifficulty('medium')"
+          >
+            <mat-icon class="mr-2" [ngClass]="selectedDifficulty() === 'medium' ? 'text-white' : 'text-amber-500'">sentiment_neutral</mat-icon>
+            Medium (9x9)
+          </button>
+          
+          <button 
+            mat-flat-button 
+            [ngClass]="selectedDifficulty() === 'hard' ? '!bg-red-600 !text-white' : '!bg-white !text-slate-700'"
+            class="!rounded-xl !px-8 !py-6 !text-lg !shadow-sm border border-slate-200 transition-all"
+            (click)="selectDifficulty('hard')"
+          >
+            <mat-icon class="mr-2" [ngClass]="selectedDifficulty() === 'hard' ? 'text-white' : 'text-red-500'">sentiment_very_dissatisfied</mat-icon>
+            Hard (11x11)
+          </button>
+        </div>
+
+        <!-- Puzzles List -->
+        <section class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div class="flex items-center gap-2 mb-6">
+          </div>
+          
+          @if (isLoading()) {
+            <div class="flex justify-center items-center py-12">
+              <mat-icon class="animate-spin text-slate-400 !w-8 !h-8 !text-3xl">refresh</mat-icon>
+            </div>
+          } @else {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Generate New Puzzle Card (Admin Only) -->
+              @if (isAdmin()) {
+                <mat-card class="!rounded-2xl !shadow-sm hover:!shadow-md transition-all hover:-translate-y-1 cursor-pointer !border-2 !border-dashed !border-slate-300 !bg-slate-50 flex flex-col items-center justify-center min-h-[180px]" (click)="!isGenerating() && generatePuzzle()">
+                  <mat-card-content class="flex flex-col items-center text-center p-6">
+                    @if (isGenerating()) {
+                      <mat-icon class="animate-spin text-blue-500 !w-10 !h-10 !text-4xl mb-4">refresh</mat-icon>
+                      <h3 class="text-lg font-bold text-slate-700">Generating Puzzle...</h3>
+                      <p class="text-sm text-slate-500 mt-2">AI is creating a unique challenge</p>
+                    } @else {
+                      <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600">
+                        <mat-icon>auto_awesome</mat-icon>
+                      </div>
+                      <h3 class="text-lg font-bold text-slate-800">Generate New</h3>
+                      <p class="text-sm text-slate-500 mt-2">Create a unique {{ selectedDifficulty() }} puzzle with AI</p>
+                    }
+                  </mat-card-content>
+                </mat-card>
+              }
+
+              @for (puzzle of displayedPuzzles(); track puzzle.id) {
+                <mat-card class="!rounded-2xl !shadow-sm hover:!shadow-md transition-all hover:-translate-y-1 cursor-pointer !border !border-slate-200" (click)="playPuzzle(puzzle.id)">
+                  <mat-card-header class="!p-6">
+                    <mat-card-title class="!text-xl !font-bold !text-slate-800 !mb-2">{{ puzzle.title }}</mat-card-title>
+                    <mat-card-subtitle class="flex gap-2">
+                      <mat-chip 
+                        [ngClass]="{
+                          '!bg-emerald-100 !text-emerald-800': puzzle.difficulty === 'easy',
+                          '!bg-amber-100 !text-amber-800': puzzle.difficulty === 'medium',
+                          '!bg-red-100 !text-red-800': puzzle.difficulty === 'hard'
+                        }"
+                        class="!font-medium !text-xs capitalize"
+                      >
+                        {{ puzzle.difficulty }}
+                      </mat-chip>
+                      <mat-chip class="!bg-slate-100 !text-slate-700 !font-medium !text-xs">{{ puzzle.size }}</mat-chip>
+                    </mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions class="!p-6 !pt-0 flex justify-end">
+                    <button mat-button 
+                      [ngClass]="{
+                        '!text-emerald-600': puzzle.difficulty === 'easy',
+                        '!text-amber-600': puzzle.difficulty === 'medium',
+                        '!text-red-600': puzzle.difficulty === 'hard'
+                      }"
+                    >
+                      PLAY NOW
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              }
+            </div>
+          }
+        </section>
+      </main>
+    </div>
